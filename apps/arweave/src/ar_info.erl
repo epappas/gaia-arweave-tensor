@@ -4,18 +4,21 @@
 
 -module(ar_info).
 
--export([get_info/0, get_recent/0]).
+-export([get_info/0, get_info/1, get_recent/0]).
 
 -include_lib("arweave/include/ar.hrl").
 -include_lib("arweave/include/ar_chain_stats.hrl").
 
 get_info() ->
-	{Time, Current} =
-		timer:tc(fun() -> ar_node:get_current_block_hash() end),
-	{Time2, Height} =
-		timer:tc(fun() -> ar_node:get_height() end),
-	[{_, BlockCount}] = ets:lookup(ar_header_sync, synced_blocks),
-    #{
+    get_info(undefined).
+
+get_info(BittensorWallet) ->
+    {Time, Current} =
+        timer:tc(fun() -> ar_node:get_current_block_hash() end),
+    {Time2, Height} =
+        timer:tc(fun() -> ar_node:get_height() end),
+    [{_, BlockCount}] = ets:lookup(ar_header_sync, synced_blocks),
+    Info = #{
         <<"network">> => list_to_binary(?NETWORK_NAME),
         <<"version">> => ?CLIENT_VERSION,
         <<"release">> => ?RELEASE_NUMBER,
@@ -37,7 +40,11 @@ get_info() ->
                 erlang:process_info(whereis(ar_node_worker), message_queue_len)
             ),
         <<"node_state_latency">> => (Time + Time2) div 2
-    }.
+    },
+    case BittensorWallet of
+        undefined -> Info;
+        _ -> Info#{<<"bittensor_wallet">> => BittensorWallet}
+    end.
 
 get_recent() ->
     #{

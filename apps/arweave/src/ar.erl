@@ -87,6 +87,7 @@ show_help() ->
 					"to the given block hash."},
 			{"start_from_block_index", "The legacy name for start_from_latest_state."},
 			{"mine", "Automatically start mining once the netwok has been joined."},
+			{"bittensor_wallet", "The tensor wallet to use to collect TAO mining rewards."},
 			{"port", "The local port to use for mining. "
 						"This port must be accessible by remote peers."},
 			{"data_dir",
@@ -647,21 +648,21 @@ start(Config) ->
 		_->
 			ok
   end,
-	case Config#config.init of
-		true ->
-			case ?NETWORK_NAME of
-				"arweave.N.1" ->
-					io:format("~nCannot start a new network with the mainnet name! "
-							"Use ./bin/start-localnet ... when running from sources "
-							"or compile via ./rebar3 as localnet tar and use "
-							"./bin/start ... as usual.~n~n"),
-					erlang:halt();
-				_ ->
-					ok
-			end;
-		false ->
-			ok
-	end,
+	% case Config#config.init of
+	% 	true ->
+	% 		case ?NETWORK_NAME of
+	% 			"gaiatensor" ->
+	% 				io:format("~nCannot start a new network with the mainnet name! "
+	% 						"Use ./bin/start-localnet ... when running from sources "
+	% 						"or compile via ./rebar3 as localnet tar and use "
+	% 						"./bin/start ... as usual.~n~n"),
+	% 				erlang:halt();
+	% 			_ ->
+	% 				ok
+	% 		end;
+	% 	false ->
+	% 		ok
+	% end,
 	validate_repack_in_place_config(Config),
 	validate_cm_pool_config(Config),
 	ok = application:set_env(arweave, config, Config),

@@ -178,10 +178,28 @@ handle4(Method, SplitPath, Req, Pid) ->
 %% Return network information from a given node.
 %% GET request to endpoint /info.
 handle(<<"GET">>, [], Req, _Pid) ->
-	{200, #{}, ar_serialize:jsonify(ar_info:get_info()), Req};
+	{ok, Config} = application:get_env(arweave, config),
+
+	Info = case proplists:get_value(bittensor_wallet, Config) of
+				undefined ->
+						ar_info:get_info();
+				BittensorWallet ->
+						ar_info:get_info(BittensorWallet)
+		end,
+
+	{200, #{}, ar_serialize:jsonify(Info), Req};
 
 handle(<<"GET">>, [<<"info">>], Req, _Pid) ->
-	{200, #{}, ar_serialize:jsonify(ar_info:get_info()), Req};
+	{ok, Config} = application:get_env(arweave, config),
+
+	Info = case proplists:get_value(bittensor_wallet, Config) of
+				undefined ->
+						ar_info:get_info();
+				BittensorWallet ->
+						ar_info:get_info(BittensorWallet)
+		end,
+
+	{200, #{}, ar_serialize:jsonify(Info), Req};
 
 handle(<<"GET">>, [<<"recent">>], Req, _Pid) ->
 	case ar_node:is_joined() of
@@ -1656,7 +1674,7 @@ serve_tx_data(Req, #tx{ format = 2, id = ID, data_size = DataSize } = TX) ->
 				{error, tx_data_too_big} ->
 					{400, #{}, jiffy:encode(#{ error => tx_data_too_big }), Req};
 				{error, not_found} when DataSize == 0 ->
-        	{200, #{}, <<>>, Req};
+					{200, #{}, <<>>, Req};
 				{error, not_found} ->
 					{404, #{ <<"content-type">> => <<"text/html; charset=utf-8">> }, sendfile("data/not_found.html"), Req};
 				{error, timeout} ->
@@ -1690,7 +1708,7 @@ serve_format_2_html_data(Req, ContentType, TX) ->
 				{error, tx_data_too_big} ->
 					{400, #{}, jiffy:encode(#{ error => tx_data_too_big }), Req};
 				{error, not_found} when TX#tx.data_size == 0 ->
-        	{200, #{ <<"content-type">> => ContentType }, <<>>, Req};
+					{200, #{ <<"content-type">> => ContentType }, <<>>, Req};
 				{error, not_found} ->
 					{404, #{ <<"content-type">> => <<"text/html; charset=utf-8">> }, sendfile("data/not_found.html"), Req};
 				{error, timeout} ->
@@ -3022,14 +3040,14 @@ post_tx_parse_id(parse_json, {TXID, Req, Body}) ->
 			end,
 			{error, invalid_json, Req};
 		{error, invalid_signature_type} ->
-            case TXID of
-                not_set ->
-                    noop;
-                _ ->
-                    ar_ignore_registry:remove_temporary(TXID),
+						case TXID of
+								not_set ->
+										noop;
+								_ ->
+										ar_ignore_registry:remove_temporary(TXID),
 					ar_tx_db:put_error_codes(TXID, [<<"invalid_signature_type">>])
-            end,
-            {error, invalid_signature_type, Req};
+						end,
+						{error, invalid_signature_type, Req};
 		{error, _} ->
 			case TXID of
 				not_set ->

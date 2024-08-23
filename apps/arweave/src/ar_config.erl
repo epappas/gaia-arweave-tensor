@@ -157,6 +157,11 @@ parse_options([{<<"mine">>, false} | Rest], Config) ->
 parse_options([{<<"mine">>, Opt} | _], _) ->
 	{error, {bad_type, mine, boolean}, Opt};
 
+parse_options([{<<"bittensor_wallet">>, BittensorWallet} | Rest], Config) when is_binary(BittensorWallet) ->
+	parse_options(Rest, Config#config{ bittensor_wallet = binary_to_list(BittensorWallet) });
+parse_options([{<<"bittensor_wallet">>, BittensorWallet} | _], _) ->
+	{error, {bad_type, bittensor_wallet, string}, BittensorWallet};
+
 parse_options([{<<"port">>, Port} | Rest], Config) when is_integer(Port) ->
 	parse_options(Rest, Config#config{ port = Port });
 parse_options([{<<"port">>, Port} | _], _) ->

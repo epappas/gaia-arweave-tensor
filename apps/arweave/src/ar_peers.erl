@@ -173,7 +173,7 @@ get_peer_performances(Peers) ->
 		#{},
 		Peers).
 
--if(?NETWORK_NAME == "arweave.N.1").
+-if(?NETWORK_NAME == "gaiatensor").
 resolve_peers([]) ->
 	[];
 resolve_peers([RawPeer | Peers]) ->

@@ -110,6 +110,7 @@
 	init = false,
 	port = ?DEFAULT_HTTP_IFACE_PORT,
 	mine = false,
+	bittensor_wallet = not_set,
 	peers = [],
 	block_gossip_peers = [],
 	local_peers = [],
