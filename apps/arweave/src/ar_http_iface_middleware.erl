@@ -180,24 +180,24 @@ handle4(Method, SplitPath, Req, Pid) ->
 handle(<<"GET">>, [], Req, _Pid) ->
 	{ok, Config} = application:get_env(arweave, config),
 
-	Info = case proplists:get_value(bittensor_wallet, Config) of
-				undefined ->
-						ar_info:get_info();
-				BittensorWallet ->
-						ar_info:get_info(BittensorWallet)
-		end,
+	Info = case Config#config.bittensor_wallet of
+			undefined ->
+					ar_info:get_info();
+			BittensorWallet ->
+					ar_info:get_info(BittensorWallet)
+	end,
 
 	{200, #{}, ar_serialize:jsonify(Info), Req};
 
 handle(<<"GET">>, [<<"info">>], Req, _Pid) ->
 	{ok, Config} = application:get_env(arweave, config),
 
-	Info = case proplists:get_value(bittensor_wallet, Config) of
-				undefined ->
-						ar_info:get_info();
-				BittensorWallet ->
-						ar_info:get_info(BittensorWallet)
-		end,
+	Info = case Config#config.bittensor_wallet of
+			undefined ->
+					ar_info:get_info();
+			BittensorWallet ->
+					ar_info:get_info(BittensorWallet)
+	end,
 
 	{200, #{}, ar_serialize:jsonify(Info), Req};
 
