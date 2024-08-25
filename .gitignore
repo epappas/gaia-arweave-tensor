@@ -35,3 +35,7 @@ release/output
 .tmp
 node_modules
 screenlog.0
+ar_tx_blacklist/*
+rocksdb/*
+data_sync_state
+header_sync_state
