@@ -13,7 +13,7 @@ if [ $# -ne 1 ]; then
 fi
 
 NAME=$1
-BACKUP_DIR="/arweave-backups/${NAME}/"
+BACKUP_DIR="$ARWEAVE_DIR/arweave-backups/${NAME}/"
 
 if [ -d "$BACKUP_DIR" ]; then
     echo "Error: Backup directory $BACKUP_DIR already exists."
@@ -22,14 +22,14 @@ fi
 
 set -x
 mkdir -p $BACKUP_DIR
-cp -rf /arweave-data/data_sync_state $BACKUP_DIR
-cp -rf /arweave-data/header_sync_state $BACKUP_DIR
-cp -rf /arweave-data/ar_tx_blacklist $BACKUP_DIR
-cp -rf /arweave-data/disk_cache $BACKUP_DIR
-cp -rf /arweave-data/rocksdb $BACKUP_DIR
-cp -rf /arweave-data/txs $BACKUP_DIR
-cp -rf /arweave-data/wallet_lists $BACKUP_DIR
-cp -rf /arweave-data/wallets $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/data_sync_state $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/header_sync_state $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/ar_tx_blacklist $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/disk_cache $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/rocksdb $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/txs $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/wallet_lists $BACKUP_DIR
+cp -rf $ARWEAVE_DIR/arweave-data/wallets $BACKUP_DIR
 { set +x; } 2>/dev/null
 echo
 

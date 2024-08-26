@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  bootnode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: testnet-bootnode
+    ports:
+      - "1984:1984"
+    deploy:
+      resources:
+        limits:
+          cpus: "3"
+          memory: "12g"
+        reservations:
+          cpus: "2"
+          memory: "8g"
+
+  # node1:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: testnet-node1
+  #   depends_on:
+  #     - bootnode
+
+  # node2:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: testnet-node2
+  #   depends_on:
+  #     - bootnode
+
+  # node3:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: testnet-node3
+  #   depends_on:
+  #     - bootnode

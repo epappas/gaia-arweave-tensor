@@ -7,16 +7,16 @@ if ! $ARWEAVE_DIR/testnet/assert_testnet.sh; then
 	exit 1
 fi
 
-if [[ ! -f "/arweave-build/mainnet/bin/start" ]]; then
+if [[ ! -f "$ARWEAVE_DIR/arweave-build/mainnet/bin/start" ]]; then
     echo "Arweave start script not found. Please run rebuild_mainnet.sh first."
 	exit 1
 fi
 
-SCREEN_CMD="screen -dmsL arweave /arweave-build/mainnet/bin/start"
+SCREEN_CMD="screen -dmsL arweave $ARWEAVE_DIR/arweave-build/mainnet/bin/start"
 address=""
 
-# look in /arweave-data to determine this node's mining address and storage modules
-for dir in /arweave-data/storage_modules/storage_module_*; do
+# look in $ARWEAVE_DIR/arweave-data to determine this node's mining address and storage modules
+for dir in $ARWEAVE_DIR/arweave-data/storage_modules/storage_module_*; do
 	# get the storage_module directory names
 	filename=$(basename $dir)
 
@@ -36,14 +36,14 @@ done
 
 SCREEN_CMD="$SCREEN_CMD mining_addr $address \
 debug \
-data_dir /arweave-data \
+data_dir $ARWEAVE_DIR/arweave-data \
 peer ams-1.eu-central-1.arweave.net \
 peer fra-1.eu-central-2.arweave.net \
 header_sync_jobs 1"
 
 echo "$SCREEN_CMD"
-echo "$SCREEN_CMD" > /arweave-build/mainnet/run.command
+echo "$SCREEN_CMD" > $ARWEAVE_DIR/arweave-build/mainnet/run.command
 
-cd /arweave-build/mainnet
+cd $ARWEAVE_DIR/arweave-build/mainnet
 
 eval "$SCREEN_CMD"

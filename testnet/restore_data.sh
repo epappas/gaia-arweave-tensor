@@ -34,7 +34,7 @@ DIRECTORIES=(
 # Warn about the deletion
 echo "The following files/directories will be DELETED:"
 for DIR in "${DIRECTORIES[@]}"; do
-    echo "/arweave-data/$DIR"
+    echo "$ARWEAVE_DIR/arweave-data/$DIR"
 done
 
 # Prompt for confirmation
@@ -45,7 +45,7 @@ if [[ "$RESPONSE" == "yes" ]]; then
     # Proceed with deletion
 	
     for DIR in "${DIRECTORIES[@]}"; do
-		FULL_PATH="/arweave-data/$DIR"
+		FULL_PATH="$ARWEAVE_DIR/arweave-data/$DIR"
         if [ -e "$FULL_PATH" ]; then
 			set -x
             rm -rf "$FULL_PATH"
@@ -60,7 +60,7 @@ fi
 
 for DIR in "${DIRECTORIES[@]}"; do
 	set -x
-	cp -rf $BACKUP_DIR/$DIR /arweave-data/$DIR
+	cp -rf $BACKUP_DIR/$DIR $ARWEAVE_DIR/arweave-data/$DIR
 	{ set +x; } 2>/dev/null
 done
 

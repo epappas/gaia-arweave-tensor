@@ -7,13 +7,13 @@ if ! $ARWEAVE_DIR/testnet/assert_testnet.sh; then
 	exit 1
 fi
 
-mkdir -p /arweave-build/mainnet
-rm -rf /arweave-build/mainnet/*
+mkdir -p $ARWEAVE_DIR/arweave-build/mainnet
+rm -rf $ARWEAVE_DIR/arweave-build/mainnet/*
 
-echo "$0 $@" > /arweave-build/mainnet/build.command
+echo "$0 $@" > $ARWEAVE_DIR/arweave-build/mainnet/build.command
 
 cd $ARWEAVE_DIR
 rm $ARWEAVE_DIR/_build/prod/rel/arweave/*.tar.gz
 $ARWEAVE_DIR/rebar3 as prod tar
-tar xf $ARWEAVE_DIR/_build/prod/rel/arweave/arweave-*.tar.gz -C /arweave-build/mainnet
+tar xf $ARWEAVE_DIR/_build/prod/rel/arweave/arweave-*.tar.gz -C $ARWEAVE_DIR/arweave-build/mainnet
 

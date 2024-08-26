@@ -39,3 +39,5 @@ ar_tx_blacklist/*
 rocksdb/*
 data_sync_state
 header_sync_state
+
+/apps/arweave/lib/RandomX/build

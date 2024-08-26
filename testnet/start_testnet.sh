@@ -14,7 +14,7 @@ if ! $ARWEAVE_DIR/testnet/assert_testnet.sh; then
 	exit 1
 fi
 
-if [[ ! -f "/arweave-build/testnet/bin/start" ]]; then
+if [[ ! -f "$ARWEAVE_DIR/arweave-build/testnet/bin/start" ]]; then
     echo "Arweave start script not found. Please run rebuild_testnet.sh first."
 	exit 1
 fi
@@ -22,7 +22,7 @@ fi
 node=$(hostname -f)
 source $ARWEAVE_DIR/testnet/testnet_nodes.sh
 
-screen_cmd="screen -dmsL arweave /arweave-build/testnet/bin/start"
+screen_cmd="screen -dmsL arweave $ARWEAVE_DIR/arweave-build/testnet/bin/start"
 screen_cmd+=$($ARWEAVE_DIR/testnet/build_data_flags.sh)
 
 
@@ -54,12 +54,12 @@ fi
 
 
 
-screen_cmd+=" $* debug mine enable remove_orphaned_storage_module_data data_dir /arweave-data \
+screen_cmd+=" $* debug mine enable remove_orphaned_storage_module_data data_dir $ARWEAVE_DIR/arweave-data \
 requests_per_minute_limit 9000"
 
 echo "$screen_cmd"
-echo "$screen_cmd" > /arweave-build/testnet/run.command
+echo "$screen_cmd" > $ARWEAVE_DIR/arweave-build/testnet/run.command
 
-cd /arweave-build/testnet
+cd $ARWEAVE_DIR/arweave-build/testnet
 
 eval "$screen_cmd"

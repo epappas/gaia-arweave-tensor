@@ -10,7 +10,7 @@ fi
 flags=""
 address=""
 
-storage_modules=($(ls -rtd /arweave-data/storage_modules/storage_module_*))
+storage_modules=($(ls -rtd $ARWEAVE_DIR/arweave-data/storage_modules/storage_module_*))
 
 # look in /arweave-data to determine this node's mining address and storage modules
 # if there are storage_modules from multiple addresses, take the latest storage_module

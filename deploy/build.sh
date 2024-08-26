@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/bin/bash -ex
+
+# Get the absolute from the ./deploy directory
+CWD="$(cd "$(dirname "$0")" && pwd)"
 
 ECHO_ONLY=0
 PRE_RELEASE=0
@@ -12,7 +15,7 @@ while getopts 'eb:l:' flag; do
     b) PRE_RELEASE=1
        BRANCH="${OPTARG}" ;;
     l) LINUX_VERSION="${OPTARG}" ;;
-    *) echo "Usage: $0 [-e] [-b <pre-release branch>] [-l <linux version>] version" 
+    *) echo "Usage: $0 [-e] [-b <pre-release branch>] [-l <linux version>] version"
        exit 1 ;;
   esac
 done
@@ -32,7 +35,7 @@ else
 fi
 
 BASE_IMAGES=("arweave-base:18.04" "arweave-base:20.04" "arweave-base:22.04" "")
-LINUX_VERSIONS=("ubuntu18" "ubuntu20" "ubuntu22" "rocky9")
+LINUX_VERSIONS=("ubuntu18" "ubuntu20" "ubuntu22" "e")
 BASE_DOCKERFILES=("Dockerfile.base.ubuntu18.04" "Dockerfile.base.ubuntu20.04" "Dockerfile.base.ubuntu22.04" "")
 
 # If specific Linux version is supplied, filter the arrays
@@ -65,7 +68,7 @@ for i in "${!BASE_DOCKERFILES[@]}"; do
       echo "Building base image $BASE_IMAGE..."
 
       # Build the base Docker image
-      run_cmd "docker build -f $BASE_DOCKERFILE -t $BASE_IMAGE ."
+      run_cmd "docker build -f $CWD/$BASE_DOCKERFILE -t $BASE_IMAGE ."
     fi
 done
 
@@ -83,9 +86,9 @@ for i in "${!LINUX_VERSIONS[@]}"; do
 
     if [ ! -z "${BASE_IMAGES[$i]}" ]; then
         # Build the Docker image
-        run_cmd "docker build -f $DOCKERFILE --build-arg BASE_IMAGE=${BASE_IMAGES[$i]} -t $IMAGE_NAME ."
+        run_cmd "docker build -f $CWD/$DOCKERFILE --build-arg BASE_IMAGE=${BASE_IMAGES[$i]} -t $IMAGE_NAME ."
     else
-        run_cmd "docker build -f $DOCKERFILE -t $IMAGE_NAME ."
+        run_cmd "docker build -f $CWD/$DOCKERFILE -t $IMAGE_NAME ."
     fi
 
     echo "Running $IMAGE_NAME..."

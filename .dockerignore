@@ -1,0 +1,56 @@
+# Version control
+.git
+.gitignore
+
+# Node.js dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+dist
+build
+
+# Environment files
+.env
+.env.*
+
+# IDEs and editors
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Blockchain specific
+# data
+chaindata
+geth
+keystore
+
+# Test files
+test
+tests
+*.test.js
+
+# Documentation
+docs
+*.md
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp
+temp
+
+# Others
+*.dump
+*.tar.gz
+*.zip
+
+/apps/arweave/lib/RandomX/build
