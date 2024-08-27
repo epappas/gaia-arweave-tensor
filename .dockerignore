@@ -52,5 +52,5 @@ temp
 *.dump
 *.tar.gz
 *.zip
-
-/apps/arweave/lib/RandomX/build
+_build
+apps/arweave/lib/RandomX/build

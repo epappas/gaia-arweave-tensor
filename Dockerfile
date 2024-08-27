@@ -16,23 +16,19 @@ RUN apt-get update && apt-get install -y erlang \
     cmake \
     gcc \
     g++ \
-    git
+    git \
+    screen \
+    pkg-config \
+    jq \
+    python3 \
+    python3-pip \
+    python3-setuptools \
+    python3-wheel \
+    python3-dev
 
 WORKDIR /app/arweave
 
-ADD ./apps /app/arweave/apps
-ADD ./bin /app/arweave/bin
-ADD ./config /app/arweave/config
-ADD ./data /app/arweave/data
-ADD ./scripts /app/arweave/scripts
-ADD ./testnet /app/arweave/testnet
-ADD ./ar_config.json /app/arweave/ar_config.json
-ADD ./ar-rebar3 /app/arweave/ar-rebar3
-ADD ./arweave-server /app/arweave/arweave-server
-ADD ./erlang_ls.config /app/arweave/erlang_ls.config
-ADD ./rebar.config /app/arweave/rebar.config
-ADD ./rebar.lock /app/arweave/rebar.lock
-ADD ./rebar3 /app/arweave/rebar3
+ADD . /app/arweave
 
 RUN ./rebar3 as prod release
 
@@ -43,4 +39,4 @@ RUN ./testnet/assert_testnet.sh && \
 
 EXPOSE 1984
 
-ENTRYPOINT [ "./bin/start", "config_file", "./ar_config.json" ]
+ENTRYPOINT [ "./scripts/entrypoint.sh" ]

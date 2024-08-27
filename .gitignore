@@ -41,3 +41,4 @@ data_sync_state
 header_sync_state
 
 /apps/arweave/lib/RandomX/build
+arweave-build/
